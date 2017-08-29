@@ -10,6 +10,7 @@
 # k in sorted(dictionary.items):
     # print
 # format into correct string
+import random
 
 
 def see_all_ratings(scores):
@@ -18,16 +19,24 @@ def see_all_ratings(scores):
         print "{} is rated at {}.".format(restaurant, score)
 
 
-def rate_new_restaurant(scores):
-    new_restaurant = raw_input('restaurant name > ').capitalize()
+def rate_new_restaurant(scores, restaurant):
 
     while True:
-        new_restaurant_rating = int(raw_input('score > '))
+        new_restaurant_rating = int(raw_input('new score > '))
         if new_restaurant_rating <= 5:
             break
         print 'Restaurants can only be rated to 5'
 
-    scores[new_restaurant] = new_restaurant_rating
+    scores[restaurant] = new_restaurant_rating
+
+
+def get_random_restaurant(scores):
+
+    recommendation = random.choice(scores.keys())
+
+    print 'Restaurant: {}, Score: {}'.format(recommendation, scores[recommendation])
+
+    rate_new_restaurant(scores, recommendation)
 
 
 with open('scores.txt') as restaurant_scores:
@@ -40,6 +49,7 @@ with open('scores.txt') as restaurant_scores:
         print
         print "If you want to see restaurant ratings, type 'Ratings'."
         print "If you want to add a new restaurant, type 'New'."
+        print "If you want a recommendation, type 'Recommend'"
         print "If you wish to quit, type 'Quit'."
         print
 
@@ -48,7 +58,10 @@ with open('scores.txt') as restaurant_scores:
         if user_input == 'Ratings':
             see_all_ratings(scores)
         elif user_input == 'New':
-            rate_new_restaurant(scores)
+            new_restaurant = raw_input('restaurant name > ').capitalize()
+            rate_new_restaurant(scores, new_restaurant)
+        elif user_input == 'Recommend':
+            get_random_restaurant(scores)
         elif user_input == 'Quit':
             break
         else:
